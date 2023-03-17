@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////////////////
-/* UAParser.js v0.7.34
+/* UAParser.js v0.7.33
    Copyright © 2012-2021 Faisal Salman <f@faisalman.com>
    MIT License */ /*
    Detect Browser, Engine, OS, CPU, and Device type/model from User-Agent data.
@@ -15,7 +15,7 @@
   // Constants
   /////////////
 
-  var LIBVERSION = "0.7.34",
+  var LIBVERSION = "0.7.33",
     EMPTY = "",
     UNKNOWN = "?",
     FUNC_TYPE = "function",
@@ -54,12 +54,9 @@
     SAMSUNG = "Samsung",
     SHARP = "Sharp",
     SONY = "Sony",
-    VIERA = "Viera",
     XIAOMI = "Xiaomi",
     ZEBRA = "Zebra",
-    FACEBOOK = "Facebook",
-    CHROMIUM_OS = "Chromium OS",
-    MAC_OS = "Mac OS";
+    FACEBOOK = "Facebook";
 
   ///////////
   // Helper
@@ -126,9 +123,6 @@
 
         // try matching uastring with regexes
         while (j < regex.length && !matches) {
-          if (!regex[j]) {
-            break;
-          }
           matches = regex[j++].exec(ua);
 
           if (!!matches) {
@@ -254,7 +248,7 @@
         /(?:ms|\()(ie) ([\w\.]+)/i, // Internet Explorer
 
         // Webkit/KHTML based                                               // Flock/RockMelt/Midori/Epiphany/Silk/Skyfire/Bolt/Iron/Iridium/PhantomJS/Bowser/QupZilla/Falkon
-        /(flock|rockmelt|midori|epiphany|silk|skyfire|ovibrowser|bolt|iron|vivaldi|iridium|phantomjs|bowser|quark|qupzilla|falkon|rekonq|puffin|brave|whale(?!.+naver)|qqbrowserlite|qq|duckduckgo)\/([-\w\.]+)/i,
+        /(flock|rockmelt|midori|epiphany|silk|skyfire|ovibrowser|bolt|iron|vivaldi|iridium|phantomjs|bowser|quark|qupzilla|falkon|rekonq|puffin|brave|whale|qqbrowserlite|qq|duckduckgo)\/([-\w\.]+)/i,
         // Rekonq/Puffin/Brave/Whale/QQBrowserLite/QQ, aka ShouQ
         /(weibo)__([\d\.]+)/i, // Weibo
       ],
@@ -345,8 +339,6 @@
       ],
       [[NAME, FACEBOOK], VERSION],
       [
-        /(kakao(?:talk|story))[\/ ]([\w\.]+)/i, // Kakao App
-        /(naver)\(.*?(\d+\.[\w\.]+).*\)/i, // Naver InApp
         /safari (line)\/([\w\.]+)/i, // Line App for iOS
         /\b(line)\/([\w\.]+)\/iab/i, // Line App for Android
         /(chromium|instagram)[\/ ]([-\w\.]+)/i, // Chromium/Instagram
@@ -409,7 +401,6 @@
         /(polaris|lynx|dillo|icab|doris|amaya|w3m|netsurf|sleipnir|obigo|mosaic|(?:go|ice|up)[\. ]?browser)[-\/ ]?v?([\w\.]+)/i,
         // Polaris/Lynx/Dillo/iCab/Doris/Amaya/w3m/NetSurf/Sleipnir/Obigo/Mosaic/Go/ICE/UP.Browser
         /(links) \(([\w\.]+)/i, // Links
-        /panasonic;(viera)/i, // Panasonic Viera
       ],
       [NAME, VERSION],
       [
@@ -463,6 +454,7 @@
       [
         //////////////////////////
         // MOBILES & TABLETS
+        // Ordered by popularity
         /////////////////////////
 
         // Samsung
@@ -470,7 +462,7 @@
       ],
       [MODEL, [VENDOR, SAMSUNG], [TYPE, TABLET]],
       [
-        /\b((?:s[cgp]h|gt|sm)-\w+|sc[g-]?[\d]+a?|galaxy nexus)/i,
+        /\b((?:s[cgp]h|gt|sm)-\w+|galaxy nexus)/i,
         /samsung[- ]([-\w]+)/i,
         /sec-(sgh\w+)/i,
       ],
@@ -488,11 +480,6 @@
       [MODEL, [VENDOR, APPLE], [TYPE, TABLET]],
       [/(macintosh);/i],
       [MODEL, [VENDOR, APPLE]],
-      [
-        // Sharp
-        /\b(sh-?[altvz]?\d\d[a-ekm]?)/i,
-      ],
-      [MODEL, [VENDOR, SHARP], [TYPE, MOBILE]],
       [
         // Huawei
         /\b((?:ag[rs][23]?|bah2?|sht?|btv)-a?[lw]\d{2})\b(?!.+d\/s)/i,
@@ -645,7 +632,7 @@
 
         // ZTE
         /(zte)[- ]([\w ]+?)(?: bui|\/|\))/i,
-        /(alcatel|geeksphone|nexian|panasonic(?!(?:;|\.))|sony(?!-bra))[-_ ]?([-\w]*)/i, // Alcatel/GeeksPhone/Nexian/Panasonic/Sony
+        /(alcatel|geeksphone|nexian|panasonic|sony(?!-bra))[-_ ]?([-\w]*)/i, // Alcatel/GeeksPhone/Nexian/Panasonic/Sony
       ],
       [VENDOR, [MODEL, /_/g, " "], [TYPE, MOBILE]],
       [
@@ -660,6 +647,11 @@
       ],
       [MODEL, [VENDOR, "Meizu"], [TYPE, MOBILE]],
       [
+        // Sharp
+        /\b(sh-?[altvz]?\d\d[a-ekm]?)/i,
+      ],
+      [MODEL, [VENDOR, SHARP], [TYPE, MOBILE]],
+      [
         // MIXED
         /(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|meizu|motorola|polytron)[-_ ]?([-\w]*)/i,
         // BlackBerry/BenQ/Palm/Sony-Ericsson/Acer/Asus/Dell/Meizu/Motorola/Polytron
@@ -672,7 +664,6 @@
       ],
       [VENDOR, MODEL, [TYPE, MOBILE]],
       [
-        /(kobo)\s(ereader|touch)/i, // Kobo
         /(archos) (gamepad2?)/i, // Archos
         /(hp).+(touchpad(?!.+tablet)|tablet)/i, // HP TouchPad
         /(kindle)\/([\w\.]+)/i, // Kindle
@@ -799,6 +790,27 @@
       [MODEL, [VENDOR, ZEBRA], [TYPE, MOBILE]],
       [
         ///////////////////
+        // CONSOLES
+        ///////////////////
+
+        /(ouya)/i, // Ouya
+        /(nintendo) ([wids3utch]+)/i, // Nintendo
+      ],
+      [VENDOR, MODEL, [TYPE, CONSOLE]],
+      [
+        /droid.+; (shield) bui/i, // Nvidia
+      ],
+      [MODEL, [VENDOR, "Nvidia"], [TYPE, CONSOLE]],
+      [
+        /(playstation [345portablevi]+)/i, // Playstation
+      ],
+      [MODEL, [VENDOR, SONY], [TYPE, CONSOLE]],
+      [
+        /\b(xbox(?: one)?(?!; xbox))[\); ]/i, // Microsoft Xbox
+      ],
+      [MODEL, [VENDOR, MICROSOFT], [TYPE, CONSOLE]],
+      [
+        ///////////////////
         // SMARTTVS
         ///////////////////
 
@@ -848,12 +860,8 @@
       ],
       [MODEL, [VENDOR, XIAOMI], [TYPE, SMARTTV]],
       [
-        /Hbbtv.*(technisat) (.*);/i, // TechniSAT
-      ],
-      [VENDOR, MODEL, [TYPE, SMARTTV]],
-      [
         /\b(roku)[\dx]*[\)\/]((?:dvp-)?[\d\.]*)/i, // Roku
-        /hbbtv\/\d+\.\d+\.\d+ +\([\w\+ ]*; *([\w\d][^;]*);([^;]*)/i, // HbbTV devices
+        /hbbtv\/\d+\.\d+\.\d+ +\([\w ]*; *(\w[^;]*);([^;]*)/i, // HbbTV devices
       ],
       [
         [VENDOR, trim],
@@ -866,27 +874,6 @@
       [[TYPE, SMARTTV]],
       [
         ///////////////////
-        // CONSOLES
-        ///////////////////
-
-        /(ouya)/i, // Ouya
-        /(nintendo) ([wids3utch]+)/i, // Nintendo
-      ],
-      [VENDOR, MODEL, [TYPE, CONSOLE]],
-      [
-        /droid.+; (shield) bui/i, // Nvidia
-      ],
-      [MODEL, [VENDOR, "Nvidia"], [TYPE, CONSOLE]],
-      [
-        /(playstation [345portablevi]+)/i, // Playstation
-      ],
-      [MODEL, [VENDOR, SONY], [TYPE, CONSOLE]],
-      [
-        /\b(xbox(?: one)?(?!; xbox))[\); ]/i, // Microsoft Xbox
-      ],
-      [MODEL, [VENDOR, MICROSOFT], [TYPE, CONSOLE]],
-      [
-        ///////////////////
         // WEARABLES
         ///////////////////
 
@@ -894,17 +881,13 @@
       ],
       [VENDOR, MODEL, [TYPE, WEARABLE]],
       [
-        /(watch)(?: ?os[,\/]|\d,\d\/)[\d\.]+/i, // Apple Watch
-      ],
-      [MODEL, [VENDOR, APPLE], [TYPE, WEARABLE]],
-      [
         /droid.+; (glass) \d/i, // Google Glass
       ],
       [MODEL, [VENDOR, GOOGLE], [TYPE, WEARABLE]],
       [/droid.+; (wt63?0{2,3})\)/i],
       [MODEL, [VENDOR, ZEBRA], [TYPE, WEARABLE]],
       [
-        /(quest( 2| pro)?)/i, // Oculus Quest
+        /(quest( 2)?)/i, // Oculus Quest
       ],
       [MODEL, [VENDOR, FACEBOOK], [TYPE, WEARABLE]],
       [
@@ -995,7 +978,7 @@
         /(macintosh|mac_powerpc\b)(?!.+haiku)/i, // Mac OS
       ],
       [
-        [NAME, MAC_OS],
+        [NAME, "Mac OS"],
         [VERSION, /_/g, "."],
       ],
       [
@@ -1029,24 +1012,15 @@
       ],
       [VERSION, [NAME, "webOS"]],
       [
-        /watch(?: ?os[,\/]|\d,\d\/)([\d\.]+)/i, // watchOS
-      ],
-      [VERSION, [NAME, "watchOS"]],
-      [
         // Google Chromecast
         /crkey\/([\d\.]+)/i, // Google Chromecast
       ],
       [VERSION, [NAME, CHROME + "cast"]],
       [
-        /(cros) [\w]+(?:\)| ([\w\.]+)\b)/i, // Chromium OS
+        /(cros) [\w]+ ([\w\.]+\w)/i, // Chromium OS
       ],
-      [[NAME, CHROMIUM_OS], VERSION],
+      [[NAME, "Chromium OS"], VERSION],
       [
-        // Smart TVs
-        /panasonic;(viera)/i, // Panasonic Viera
-        /(netrange)mmh/i, // Netrange
-        /(nettv)\/(\d+\.[\w\.]+)/i, // NetTV
-
         // Console
         /(nintendo|playstation) ([wids345portablevuch]+)/i, // Nintendo/Playstation
         /(xbox); +xbox ([^\);]+)/i, // Microsoft Xbox (360, One, X, S, Series X, Series S)
@@ -1091,16 +1065,13 @@
       return new UAParser(ua, extensions).getResult();
     }
 
-    var _navigator =
-      typeof window !== UNDEF_TYPE && window.navigator
-        ? window.navigator
-        : undefined;
     var _ua =
-      ua || (_navigator && _navigator.userAgent ? _navigator.userAgent : EMPTY);
-    var _uach =
-      _navigator && _navigator.userAgentData
-        ? _navigator.userAgentData
-        : undefined;
+      ua ||
+      (typeof window !== UNDEF_TYPE &&
+      window.navigator &&
+      window.navigator.userAgent
+        ? window.navigator.userAgent
+        : EMPTY);
     var _rgxmap = extensions ? extend(regexes, extensions) : regexes;
 
     this.getBrowser = function () {
@@ -1108,15 +1079,7 @@
       _browser[NAME] = undefined;
       _browser[VERSION] = undefined;
       rgxMapper.call(_browser, _ua, _rgxmap.browser);
-      _browser[MAJOR] = majorize(_browser[VERSION]);
-      // Brave-specific detection
-      if (
-        _navigator &&
-        _navigator.brave &&
-        typeof _navigator.brave.isBrave == FUNC_TYPE
-      ) {
-        _browser[NAME] = "Brave";
-      }
+      _browser.major = majorize(_browser.version);
       return _browser;
     };
     this.getCPU = function () {
@@ -1131,20 +1094,6 @@
       _device[MODEL] = undefined;
       _device[TYPE] = undefined;
       rgxMapper.call(_device, _ua, _rgxmap.device);
-      if (!_device[TYPE] && _uach && _uach.mobile) {
-        _device[TYPE] = MOBILE;
-      }
-      // iPadOS-specific detection: identified as Mac, but has some iOS-only properties
-      if (
-        _device[MODEL] == "Macintosh" &&
-        _navigator &&
-        typeof _navigator.standalone !== UNDEF_TYPE &&
-        _navigator.maxTouchPoints &&
-        _navigator.maxTouchPoints > 2
-      ) {
-        _device[MODEL] = "iPad";
-        _device[TYPE] = TABLET;
-      }
       return _device;
     };
     this.getEngine = function () {
@@ -1159,11 +1108,6 @@
       _os[NAME] = undefined;
       _os[VERSION] = undefined;
       rgxMapper.call(_os, _ua, _rgxmap.os);
-      if (!_os[NAME] && _uach && _uach.platform != "Unknown") {
-        _os[NAME] = _uach.platform
-          .replace(/chrome os/i, CHROMIUM_OS)
-          .replace(/macos/i, MAC_OS); // backward compatibility
-      }
       return _os;
     };
     this.getResult = function () {
